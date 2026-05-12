@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= forecast.location.name %> Weather — WeatherDash</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 2rem 1rem; }
+    .container { max-width: 720px; width: 100%; }
+    .back { margin-bottom: 1rem; }
+    .back a { color: rgba(255,255,255,.7); text-decoration: none; font-size: .9rem; }
+    .back a:hover { color: #fff; }
+    .current-card { background: rgba(255,255,255,.15); backdrop-filter: blur(12px); border-radius: 20px; padding: 2rem; text-align: center; margin-bottom: 1.5rem; }
+    .current-card h1 { font-size: 1.5rem; margin-bottom: .25rem; }
+    .current-card .loc-detail { opacity: .7; font-size: .9rem; margin-bottom: 1rem; }
+    .current-card .temp { font-size: 3.5rem; font-weight: 300; }
+    .current-card .weather-icon { font-size: 2.5rem; }
+    .current-card .weather-label { font-size: 1rem; opacity: .8; margin-bottom: .75rem; }
+    .details { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; max-width: 420px; margin: 0 auto; }
+    .detail-item { background: rgba(255,255,255,.1); border-radius: 12px; padding: .75rem .5rem; }
+    .detail-item .label { font-size: .75rem; opacity: .6; text-transform: uppercase; letter-spacing: .04em; }
+    .detail-item .value { font-size: 1.1rem; font-weight: 600; }
+    .forecast { display: grid; grid-template-columns: repeat(7, 1fr); gap: .5rem; margin-bottom: 1.5rem; }
+    @media (max-width: 600px) { .forecast { grid-template-columns: repeat(4, 1fr); } .details { grid-template-columns: repeat(2, 1fr); } }
+    .day-card { background: rgba(255,255,255,.12); border-radius: 14px; padding: .75rem .4rem; text-align: center; }
+    .day-card .day-name { font-size: .8rem; font-weight: 600; opacity: .8; margin-bottom: .25rem; }
+    .day-card .day-icon { font-size: 1.5rem; margin-bottom: .25rem; }
+    .day-card .day-temps { font-size: .85rem; }
+    .day-card .day-high { font-weight: 600; }
+    .day-card .day-low { opacity: .6; margin-left: .25rem; }
+    .search-again { text-align: center; margin-top: 1.5rem; }
+    .search-again a, .search-again form { display: inline-block; }
+    .search-again input[type="text"] { padding: .5rem .85rem; border: none; border-radius: 10px; font-size: .9rem; outline: none; width: 200px; }
+    .search-again button { padding: .5rem 1rem; background: #fff; color: #667eea; border: none; border-radius: 10px; font-size: .9rem; font-weight: 600; cursor: pointer; }
+    footer { margin-top: 2rem; font-size: .8rem; opacity: .5; text-align: center; }
+    footer a { color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="back"><a href="/">← Search again</a></div>
+
+    <div class="current-card">
+      <h1><%= forecast.location.name %></h1>
+      <div class="loc-detail"><%= forecast.location.admin1 %><%= forecast.location.admin1 && forecast.location.country ? ', ' : '' %><%= forecast.location.country %></div>
+      <div class="weather-icon"><%= forecast.current.weather.icon %></div>
+      <div class="temp"><%= forecast.current.temp %>°C</div>
+      <div class="weather-label"><%= forecast.current.weather.label %></div>
+      <div class="details">
+        <div class="detail-item"><div class="label">Feels like</div><div class="value"><%= forecast.current.feelsLike %>°</div></div>
+        <div class="detail-item"><div class="label">Humidity</div><div class="value"><%= forecast.current.humidity %>%</div></div>
+        <div class="detail-item"><div class="label">Wind</div><div class="value"><%= forecast.current.windSpeed %> km/h <%= forecast.current.windDirection %></div></div>
+      </div>
+    </div>
+
+    <div class="forecast">
+      <% forecast.days.forEach(day => { %>
+        <div class="day-card">
+          <div class="day-name"><%= day.dayName %></div>
+          <div class="day-icon"><%= day.weather.icon %></div>
+          <div class="day-temps">
+            <span class="day-high"><%= day.max %>°</span>
+            <span class="day-low"><%= day.min %>°</span>
+          </div>
+          <div style="font-size:.7rem;opacity:.6;"><%= day.weather.label %></div>
+        </div>
+      <% }) %>
+    </div>
+
+    <div class="search-again">
+      <form method="POST" action="/" style="display:flex;gap:.5rem;align-items:center;justify-content:center;">
+        <input type="text" name="city" placeholder="Another city..." required>
+        <button type="submit">Search</button>
+      </form>
+    </div>
+
+    <footer>Powered by <a href="https://open-meteo.com">Open-Meteo</a></footer>
+  </div>
+</body>
+</html>

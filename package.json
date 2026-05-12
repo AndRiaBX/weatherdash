@@ -1,0 +1,14 @@
+{
+  "name": "weatherdash",
+  "version": "1.0.0",
+  "description": "Weather dashboard using Open-Meteo API",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
+  }
+}
