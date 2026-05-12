@@ -1,48 +1,101 @@
 # WeatherDash — Weather Dashboard
 
-A server-rendered weather dashboard built with **Node.js**, **Express**, and **EJS**. Uses the free [Open-Meteo API](https://open-meteo.com/) — no API key required.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B-green)](https://nodejs.org)
+[![Express](https://img.shields.io/badge/Express-4.21%2B-lightgrey)](https://expressjs.com)
+[![GitHub issues](https://img.shields.io/github/issues/AndRiaBX/weatherdash)](https://github.com/AndRiaBX/weatherdash/issues)
+
+A server-rendered weather dashboard built with **Node.js**, **Express**, and **EJS**. Uses the free [Open-Meteo API](https://open-meteo.com/) — **no API key required**.
 
 ## Features
 
-- Current conditions: temperature, feels-like, humidity, wind speed & direction
-- 7-day forecast with daily highs/lows and weather icons
-- Search any city (uses Open-Meteo geocoding)
-- Server-side rendering — no JavaScript required on the client
-- Responsive design
+- **Current Conditions** — Temperature, feels-like, humidity, wind speed & direction
+- **7-Day Forecast** — Daily highs/lows with weather icons and descriptions
+- **City Search** — Geocoding for any city worldwide
+- **Server-Side Rendering** — No JavaScript required on the client
+- **Responsive Design** — Beautiful gradient UI that works on mobile and desktop
+- **Zero Dependencies on External Keys** — Open-Meteo is free and open
 
-## Setup
+## Quick Start
 
 ```bash
 npm install
 npm start
 ```
 
-Server runs on `http://localhost:3000`.
+Server runs on **http://localhost:3000**.
 
 ## Usage
 
-Open `http://localhost:3000` and enter a city name. Default cities:
-- `/weather?city=Tbilisi`
-- `/weather?city=Tokyo`
-- `/weather?city=London`
+### Web UI
 
-## API
+Open `http://localhost:3000` and enter a city name. Quick links:
+- [Tbilisi](/weather?city=Tbilisi)
+- [Tokyo](/weather?city=Tokyo)
+- [London](/weather?city=London)
 
-Open-Meteo endpoints used:
-- **Geocoding**: `https://geocoding-api.open-meteo.com/v1/search?name={city}`
-- **Weather**: `https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,apparent_temperature,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m&daily=temperature_2m_max,temperature_2m_min,weather_code&timezone=auto`
+### Direct API Links
 
-## Structure
+```
+/weather?city=Tbilisi
+/weather?city=New+York
+/weather?city=Paris
+```
+
+## How It Works
+
+WeatherDash uses two free Open-Meteo endpoints:
+
+1. **Geocoding** — Converts city names to coordinates
+   `https://geocoding-api.open-meteo.com/v1/search?name={city}`
+
+2. **Weather Forecast** — Gets 7-day forecast for coordinates
+   `https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&...`
+
+No rate limiting for moderate use. See [Open-Meteo docs](https://open-meteo.com/en/docs) for details.
+
+## Project Structure
 
 ```
 weatherdash/
 ├── src/
-│   ├── server.js      # Express app
+│   ├── server.js      # Express app — routes and search
 │   └── weather.js     # Open-Meteo API client
 ├── views/
-│   ├── index.ejs      # Search form
-│   ├── weather.ejs    # Weather display
+│   ├── index.ejs      # Search form with gradient background
+│   ├── weather.ejs    # Weather display with current + 7-day
 │   └── error.ejs      # Error page
 ├── package.json
 └── README.md
 ```
+
+## Weather Codes
+
+WeatherDash maps WMO weather codes (00–99) to emoji icons and human-readable labels:
+
+| Code | Icon | Description      |
+|------|------|------------------|
+| 0    | ☀️   | Clear sky        |
+| 1–3  | 🌤️⛅☁️ | Cloudy variants  |
+| 45   | 🌫️   | Foggy            |
+| 51–57 | 🌧️  | Drizzle          |
+| 61–67 | 🌦️🌧️ | Rain           |
+| 71–77 | 🌨️  | Snow             |
+| 80–86 | 🌦️🌧️🌨️ | Showers      |
+| 95–99 | ⛈️  | Thunderstorm     |
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing`)
+5. Open a Pull Request
+
+## License
+
+MIT — see [LICENSE](LICENSE) for details.
+
+---
+
+*Built with Node.js, Express, and Open-Meteo.*

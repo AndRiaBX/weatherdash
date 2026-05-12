@@ -7,20 +7,27 @@ const https = require('https');
 
 const GEO_URL = 'https://geocoding-api.open-meteo.com/v1/search';
 const WEATHER_URL = 'https://api.open-meteo.com/v1/forecast';
+const HTTP_TIMEOUT = 10000; // 10 seconds
 
 function fetchJSON(url) {
   return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
+    const req = https.get(url, (res) => {
       let data = '';
       res.on('data', (chunk) => { data += chunk; });
       res.on('end', () => {
         try {
           resolve(JSON.parse(data));
         } catch (e) {
-          reject(new Error(`Failed to parse JSON: ${e.message}`));
+          reject(new Error('Failed to parse weather data.'));
         }
       });
-    }).on('error', (e) => reject(new Error(`HTTP request failed: ${e.message}`)));
+    });
+
+    req.on('error', () => reject(new Error('Failed to fetch weather data.')));
+    req.setTimeout(HTTP_TIMEOUT, () => {
+      req.destroy();
+      reject(new Error('Weather API request timed out.'));
+    });
   });
 }
 

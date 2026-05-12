@@ -16,11 +16,16 @@ app.get('/', (req, res) => {
   res.render('index', { error: null, city: null });
 });
 
+const MAX_CITY_LENGTH = 100;
+
 // Weather search (form POST)
 app.post('/', async (req, res) => {
   const query = (req.body.city || '').trim();
   if (!query) {
     return res.render('index', { error: 'Please enter a city name.', city: null });
+  }
+  if (query.length > MAX_CITY_LENGTH) {
+    return res.render('index', { error: `City name too long (max ${MAX_CITY_LENGTH} characters).`, city: null });
   }
 
   try {
@@ -44,6 +49,9 @@ app.get('/weather', async (req, res) => {
   const query = (req.query.city || '').trim();
   if (!query) {
     return res.redirect('/');
+  }
+  if (query.length > MAX_CITY_LENGTH) {
+    return res.render('error', { message: `City name too long (max ${MAX_CITY_LENGTH} characters).` });
   }
 
   try {
