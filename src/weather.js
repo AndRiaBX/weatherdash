@@ -145,4 +145,4 @@ async function getForecast(latitude, longitude, timezone) {
   return forecast;
 }
 
-module.exports = { searchCity, getForecast };
+module.exports = { searchCity, getForecast, getWeatherInfo, getWindDirection, WMO_CODES };

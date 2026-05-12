@@ -70,6 +70,10 @@ app.get('/weather', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`[weatherdash] Server running at http://localhost:${PORT}`);
-});
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`[weatherdash] Server running at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = { app };
