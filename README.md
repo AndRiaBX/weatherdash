@@ -18,12 +18,21 @@ A server-rendered weather dashboard built with **Node.js**, **Express**, and **E
 
 ## Quick Start
 
+### Local
 ```bash
 npm install
 npm start
 ```
 
 Server runs on **http://localhost:3000**.
+
+### Docker
+```bash
+docker build -t weatherdash .
+docker run -p 3000:3000 weatherdash
+```
+
+Open **http://localhost:3000** in your browser.
 
 ## Usage
 
@@ -34,13 +43,53 @@ Open `http://localhost:3000` and enter a city name. Quick links:
 - [Tokyo](/weather?city=Tokyo)
 - [London](/weather?city=London)
 
-### Direct API Links
+## Screenshots
+
+> *(Screenshots coming soon — add your own by placing images in a `screenshots/` directory and linking them here.)*
+
+| View | Preview |
+|------|---------|
+| Search form | `screenshots/search.png` |
+| Weather display | `screenshots/weather.png` |
+| Error page | `screenshots/error.png` |
+
+## API
+
+WeatherDash exposes a single server-rendered endpoint for weather lookups.
+
+### `GET /`
+
+Renders the search form. Accepts optional `POST` with `city` field for form-based search.
+
+### `GET /weather?city={name}`
+
+Fetches and renders current conditions and a 7-day forecast for the given city.
+
+**Parameters:**
+
+| Param  | Type   | Required | Description |
+|--------|--------|----------|-------------|
+| `city` | string | Yes      | City name (e.g., `Tbilisi`, `New+York`) |
+
+**Examples:**
 
 ```
 /weather?city=Tbilisi
 /weather?city=New+York
 /weather?city=Paris
 ```
+
+**Responses:**
+
+- **200** — Server-rendered HTML weather page
+- **200 (with error)** — Error page if city not found or API failure
+
+### Response Codes
+
+| Code | Meaning |
+|------|---------|
+| 200  | Success — weather or error page rendered |
+| 404  | City not found via geocoding |
 
 ## How It Works
 
