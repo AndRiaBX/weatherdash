@@ -6,6 +6,9 @@ const { describe, it, before, after } = require('node:test');
 const assert = require('node:assert/strict');
 const http = require('node:http');
 
+// Prevent server.js auto-listen during tests
+process.env.NODE_ENV = 'test';
+
 // ── Mock weather module BEFORE server.js imports it ────────────────
 // Require and cache weather, then replace only the HTTP-dependent functions.
 // Server.js destructures searchCity/getForecast at require time, so it
