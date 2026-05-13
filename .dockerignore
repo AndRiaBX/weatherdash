@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+
+# Test & dev
+test/
+node_modules/
+.git/
+.github/
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+
+# Documentation (not needed at runtime)
+CONTRIBUTING.md
+screenshots/

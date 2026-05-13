@@ -12,6 +12,10 @@ const HTTP_TIMEOUT = 10000; // 10 seconds
 function fetchJSON(url) {
   return new Promise((resolve, reject) => {
     const req = https.get(url, (res) => {
+      if (res.statusCode < 200 || res.statusCode >= 300) {
+        reject(new Error(`Weather API returned HTTP ${res.statusCode}`));
+        return;
+      }
       let data = '';
       res.on('data', (chunk) => { data += chunk; });
       res.on('end', () => {
